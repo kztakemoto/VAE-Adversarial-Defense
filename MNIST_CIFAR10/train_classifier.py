@@ -1,3 +1,4 @@
+from keras import utils
 from models.mnistmodel import mnist_model
 from models.cifarmodel import cifar_model
 import tensorflow as tf
@@ -10,6 +11,13 @@ from keras.datasets import cifar10, mnist
 # MNIST
 #X_train, Y_train, X_test, Y_test, labels_train, labels_test = load_mnist()
 (X_train, Y_train), (X_test, Y_test) = mnist.load_data()
+X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
+X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
+X_train = X_train.astype('float32')
+X_test = X_test.astype('float32')
+X_train = X_train / 255.0
+X_test = X_test / 255.0
+
 # labels to categorical
 num_classes = 10
 Y_train = utils.to_categorical(Y_train, num_classes)
@@ -22,6 +30,8 @@ Y_test = utils.to_categorical(Y_test, num_classes)
 (train_x, train_y), (test_x, test_y) = cifar10.load_data()
 train_x = train_x.astype('float32')
 test_x = test_x.astype('float32')
+train_x = train_x / 255.0
+test_x = test_x / 255.0
 
 # labels to categorical
 num_classes = 10
@@ -29,8 +39,8 @@ train_y = utils.to_categorical(train_y, num_classes)
 test_y = utils.to_categorical(test_y, num_classes)
 
 # Reshape
-train_x = train_x.reshape([-1, 32, 32, 3])
-test_x = test_x.reshape([-1, 32, 32, 3])
+#train_x = train_x.reshape([-1, 32, 32, 3])
+#test_x = test_x.reshape([-1, 32, 32, 3])
 
 # Create TF session and set as Keras backend session
 sess = tf.Session()
@@ -74,3 +84,4 @@ except:
     history = cifar_classifier.fit(train_x, train_y, batch_size=256, epochs=150, validation_data=(test_x, test_y),
                                    callbacks=[LearningRateScheduler(lr_schedule)], verbose=2)
     cifar_classifier.save_weights("trained_model/cifar_model.h5")
+
