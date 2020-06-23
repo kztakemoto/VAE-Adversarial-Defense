@@ -1,4 +1,3 @@
-from loaddata import load_cifar, load_mnist
 from models.mnistmodel import mnist_model
 from models.cifarmodel import cifar_model
 import tensorflow as tf
@@ -6,14 +5,28 @@ from sklearn.metrics import confusion_matrix
 from keras.callbacks import LearningRateScheduler
 import numpy as np
 import keras
+from keras.datasets import cifar10, mnist
 
 # MNIST
-X_train, Y_train, X_test, Y_test, labels_train, labels_test = load_mnist()
+#X_train, Y_train, X_test, Y_test, labels_train, labels_test = load_mnist()
+(X_train, Y_train), (X_test, Y_test) = mnist.load_data()
+# labels to categorical
+num_classes = 10
+Y_train = utils.to_categorical(Y_train, num_classes)
+Y_test = utils.to_categorical(Y_test, num_classes)
 
 # CIFAR
 # Load dataset
-train_x, train_y, train_l = load_cifar()
-test_x, test_y, test_l = load_cifar("test")
+#train_x, train_y, train_l = load_cifar()
+#test_x, test_y, test_l = load_cifar("test")
+(train_x, train_y), (test_x, test_y) = cifar10.load_data()
+train_x = train_x.astype('float32')
+test_x = test_x.astype('float32')
+
+# labels to categorical
+num_classes = 10
+train_y = utils.to_categorical(train_y, num_classes)
+test_y = utils.to_categorical(test_y, num_classes)
 
 # Reshape
 train_x = train_x.reshape([-1, 32, 32, 3])
