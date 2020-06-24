@@ -22,14 +22,19 @@ pip install git+https://github.com/kztakemoto/adversarial-robustness-toolbox
 python train_classifier.py
 ```
 
-### Train the VAEs
+### Train the VAEs for MNIST and CIFAR-10
 ```
 python train_vae.py
 ```
 
 ### To evaluate the attacks using FGSM and defenses using VAE
+for MNIST
 ```
-python evaluate_cifar.py
+python evaluate_VAE_defense.py --dataset mnist
+```
+for CIFAR-10
+```
+python evaluate_VAE_defense.py --dataset cifar
 ```
 
 ## NIPS 2017 Defense Against Adversarial Attacks Dataset
