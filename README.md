@@ -1,46 +1,38 @@
 # VAE-Adversarial-Defense
 
-Code to produce the results of ArXiv preprint ["Adversarial Defense of Image Classification Using a Variational Auto-Encoder"](https://arxiv.org/abs/1812.02891).
+This repository is a forked version of [VAE-Adversarial-Defense](https://github.com/Roy-YL/VAE-Adversarial-Defense).
 
 ### Requirements
 
-- Python 3.6
+- Python 3.7
 - Tensorflow and Keras
-- Cleverhans
+- IBM Adversarial Robustness Toolbox 1.1.0
 - Sklearn
-- Scipy, Imageio, matplotlib
+- Scipy
+- matplotlib
 
-### MNIST and CIFAR-10
+## MNIST and CIFAR-10
+### Install IBM Adversarial Robustness Toolbox 1.1.0
+```
+pip install git+https://github.com/kztakemoto/adversarial-robustness-toolbox
+```
 
-The MNIST dataset should be downloaded by the user and stored under `data` directory in `mat` format. [MNIST](http://yann.lecun.com/exdb/mnist/)
-
-The CIFAR-10 dataset can be downloaded by running provided script. [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html)
-
-To train the classifiers, run 
-
-```shell
+### Train the classifiers for MNIST and CIFAR-10
+```
 python train_classifier.py
 ```
 
-To train the VAEs, run
-
-```shell
+### Train the VAEs
+```
 python train_vae.py
 ```
 
-To evaluate the attacks and defenses, run
-
-```shell
-python evaluate_mnist.py
+### To evaluate the attacks using FGSM and defenses using VAE
 ```
-
-and
-
-```shell
 python evaluate_cifar.py
 ```
 
-### NIPS 2017 Defense Against Adversarial Attacks Dataset
+## NIPS 2017 Defense Against Adversarial Attacks Dataset
 
 Download the 1000 image dataset and pretrained Inception-V3 model checkpoint from the [Kaggle competition](https://www.kaggle.com/c/nips-2017-defense-against-adversarial-attack/data).
 

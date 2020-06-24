@@ -1,131 +1,70 @@
-import scipy.io as sio
 import numpy as np
 import keras
 from keras import backend
 from models.cifarmodel import cifar_model
 from loaddata import load_cifar
-import tensorflow as tf
-import matplotlib.pyplot as plt
 from models.vae import vae_model_mnist, vae_model_cifar
 from jpeg import jpeg
 from art.attacks import FastGradientMethod
 from art.classifiers import KerasClassifier
+import matplotlib.pyplot as plt
 
-plt.switch_backend('agg')
-
-FGSM = True
-IFGSM = False  # Set one attack to True at a time
-figure_title = "FGSM on CIFAR-10"
-figure_filename = "FGSM_cifar.eps"
-
-# CIFAR
-# Load dataset
+# Load CIFAR dataset
 train_x, train_y, test_x, test_y = load_cifar()
-
-# Create TF session and set as Keras backend session
-sess = tf.Session()
-keras.backend.set_session(sess)
-
-x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
-y = tf.placeholder(tf.float32, shape=(None, 10))
 
 # cifar model
 cifar_model = cifar_model()
 optimizer = keras.optimizers.SGD(lr=1e-3, momentum=0.9, nesterov=False)
 cifar_model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 cifar_model.load_weights("trained_model/cifar_model.h5")
+classifier = KerasClassifier(model=cifar_model)
 
 # Load VAE
 VAE_model = vae_model_cifar()
 VAE_model.compile(optimizer='adam')
 VAE_model.load_weights("vae_cifar.h5")
 
-
-# Normalized L2 difference
-def l2difference(x, x_adv):
-    x = x.reshape(len(x), -1)
-    x_adv = x_adv.reshape(len(x_adv), -1)
-    num = np.linalg.norm(x - x_adv, axis=1)
-    denom = np.linalg.norm(x, axis=1)
-    return np.sum(num / denom) / len(x)
-
-
-data_for_plotting = np.zeros([15, 7])
-wrap = KerasModelWrapper(cifar_model)
-
-# FGSM Attack & I-FGSM Attack
-
-epsilons = np.linspace(0.005, 0.1, 15)
-fgsm = FastGradientMethod(wrap, back='tf', sess=sess)
-ifgsm = BasicIterativeMethod(wrap, back='tf', sess=sess)
-
-classifier = KerasClassifier(model=cifar_model)
+logger.info('Craft adversarial images with FGSM')
 attack = FastGradientMethod(classifier, eps=0.1)
-test_x_adv = attack.generate(test_x)
-preds_test_x_adv = np.argmax(classifier.predict(test_x_adv), axis=1)
-acc = np.sum(preds_test_x_adv != np.argmax(test_y, axis=1)) / test_y.shape[0]
+X_adv = attack.generate(test_x)
 
-for i in range(len(epsilons)):
+# Compute accuracy
+preds_test_x = np.argmax(classifier.predict(test_x), axis=1)
+acc = np.sum(preds_test_x == np.argmax(test_y, axis=1)) / test_y.shape[0]
+logger.info('Accuracy on test images: %.2f%%', (acc * 100))
 
-    # FGSM
-    fgsm_params = {'eps': epsilons[i],
-                   'clip_min': 0.,
-                   'clip_max': 1.,
-                   }
+# Compute fooling rate
+preds_X_adv = np.argmax(classifier.predict(X_adv), axis=1)
+fooling_rate = np.sum(preds_X_adv != np.argmax(test_y, axis=1)) / test_y.shape[0]
+logger.info('Fooling rate of FGSM attacks on test images: %.2f%%', (fooling_rate  * 100))
 
-    X_adv = np.zeros(test_x.shape)
-    for j in range(10):
-        k = j * 1000
-        X_adv[k:k + 1000, :] = fgsm.generate_np(test_x[k:k + 1000, :], **fgsm_params)
+logger.info('Adversarial defense using VAE')
+X_vae = VAE_model.predict(X_adv, batch_size=500)
 
-    # Uncomment this for I-FGSM attack
-    ''' 
-    # I-FGSM
-    ifgsm_params = {'eps': epsilons[i],
-                    'eps_iter': epsilons[i] / 10,
-                    'nb_iter': 10,
-                    'clip_min': 0.,
-                    'clip_max': 1.,
-                    }
-    X_adv = np.zeros(test_x.shape)
-    for j in range(10):
-        k = j * 1000
-        X_adv[k:k + 1000, :] = ifgsm.generate_np(test_x[k:k + 1000, :], **ifgsm_params)
-    '''
+# Compute fooling rate
+preds_X_vae = np.argmax(classifier.predict(X_vae), axis=1)
+fooling_rate = np.sum(preds_X_vae != np.argmax(test_y, axis=1)) / test_y.shape[0]
+logger.info('Fooling rate on after adversarial defense using VAE: %.2f%%', (fooling_rate  * 100))
 
-    # VAE
-    X_vae = VAE_model.predict(X_adv, batch_size=500)
 
-    # Jpeg
-    X_jpeg = jpeg(X_adv, image_size=32, channels=3, quality=23)
-    X_jpeg_10 = jpeg(X_adv, image_size=32, channels=3, quality=10)
-    X_jpeg_50 = jpeg(X_adv, image_size=32, channels=3, quality=50)
-    X_jpeg_70 = jpeg(X_adv, image_size=32, channels=3, quality=70)
+# normalization for image plot
+def norm(x):
+    #return (x - np.min(x)) / (np.max(x) - np.min(x))
+    return np.clip(x, 0, 1)
 
-    _, acc = cifar_model.evaluate(X_adv, test_y, batch_size=5000)
-    _, acc_vae = cifar_model.evaluate(X_vae, test_y, batch_size=5000)
-    _, acc_jpeg = cifar_model.evaluate(X_jpeg, test_y, batch_size=5000)
+logger.info('Plot the orignail image, perturbation, and adversarial image')
+# select test images
+idx_sample_imgs = np.array([1, 12, 123])
+fig, ax = plt.subplots(len(idx_sample_imgs), 3)
+for i, idx_img in enumerate(idx_sample_imgs):
+    ax[i][0].imshow(norm(test_x[idx_img]))
+    ax[i][0].axis('off')
+    ax[i][0].set_title(label[np.argmax(test_y[idx_img])])
+    ax[i][1].imshow(norm(X_adv[idx_img]))
+    ax[i][1].axis('off')
+    ax[i][1].set_title(label[np.argmax(preds_X_adv[idx_img])])
+    ax[i][2].imshow(norm(X_vae[idx_img]))
+    ax[i][2].axis('off')
+    ax[i][2].set_title(label[np.argmax(preds_X_vae[idx_img])])
 
-    _, acc_jpeg_10 = cifar_model.evaluate(X_jpeg_10, test_y, batch_size=5000, verbose=0)
-    _, acc_jpeg_50 = cifar_model.evaluate(X_jpeg_50, test_y, batch_size=5000, verbose=0)
-    _, acc_jpeg_70 = cifar_model.evaluate(X_jpeg_70, test_y, batch_size=5000, verbose=0)
-
-    difference = l2difference(test_x, X_adv)
-    data_for_plotting[i, :] = [difference, acc, acc_vae, acc_jpeg_10, acc_jpeg, acc_jpeg_50, acc_jpeg_70]
-
-fig, ax1 = plt.subplots()
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 1], "b-", label="No Defense")
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 2], "r-", label="VAE")
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 3], "y-", label="JPEG-10")
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 4], "g-", label="JPEG-23")
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 5], "m-", label="JPEG-50")
-ax1.plot(data_for_plotting[:, 0], data_for_plotting[:, 6], "k-", label="JPEG-70")
-
-ax1.set_xlabel("Normalized l2 Difference")
-ax1.set_ylabel("Top-1 Accuracy", color='r')
-
-ax1.legend()
-
-plt.title(figure_title)
-print(data_for_plotting)
-plt.savefig(figure_filename, format='eps', dpi=1000)
+plt.savefig('plot_cifar.png')
