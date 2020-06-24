@@ -2,23 +2,15 @@ import scipy.io as sio
 import numpy as np
 import keras
 from models.vae import vae_model_cifar, vae_model_mnist
-from loaddata import load_mnist
+from loaddata import load_mnist, load_cifar
 from keras import backend as K
 import tensorflow as tf
-from data.data import load_cifar
-from jpeg import rgb_to_ycbcr
 
-# MNIST
-X_train, Y_train, X_test, Y_test, labels_train, labels_test = load_mnist()
-
-# CIFAR
 # Load dataset
-train_x, train_y, train_l = load_cifar()
-test_x, test_y, test_l = load_cifar("test")
-
-# Reshape
-train_x = train_x.reshape([-1, 32, 32, 3])
-test_x = test_x.reshape([-1, 32, 32, 3])
+# MNIST
+X_train, Y_train, X_test, Y_test = load_mnist()
+# CIFAR
+train_x, train_y, test_x, test_y = load_cifar()
 
 # Create TF session and set as Keras backend session
 sess = tf.Session()

@@ -2,9 +2,8 @@ import scipy.io as sio
 import numpy as np
 import keras
 from keras import backend
-from models.mnistmodel import mnist_model
 from models.cifarmodel import cifar_model
-from loaddata import load_mnist, load_cifar
+from loaddata import load_cifar
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from models.vae import vae_model_mnist, vae_model_cifar
@@ -22,10 +21,7 @@ figure_filename = "FGSM_cifar.eps"
 
 # CIFAR
 # Load dataset
-train_x, train_y, train_l = load_cifar()
-test_x, test_y, test_l = load_cifar("test")
-train_x = train_x.reshape([-1, 32, 32, 3])
-test_x = test_x.reshape([-1, 32, 32, 3])
+train_x, train_y, test_x, test_y = load_cifar()
 
 # Create TF session and set as Keras backend session
 sess = tf.Session()
