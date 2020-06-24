@@ -14,7 +14,7 @@ def load_cifar():
     train_y = utils.to_categorical(train_y, num_classes)
     test_y = utils.to_categorical(test_y, num_classes)
 
-    return train_x, train_y, test_x, train_y
+    return train_x, train_y, test_x, test_y
 
 
 # Load data

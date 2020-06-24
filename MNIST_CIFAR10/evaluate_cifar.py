@@ -8,9 +8,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from models.vae import vae_model_mnist, vae_model_cifar
 from jpeg import jpeg
-from cleverhans.attacks import FastGradientMethod
-from cleverhans.utils_keras import KerasModelWrapper
-from cleverhans.attacks import BasicIterativeMethod
+from art.attacks import FastGradientMethod
+from art.classifiers import KerasClassifier
 
 plt.switch_backend('agg')
 
@@ -59,6 +58,12 @@ wrap = KerasModelWrapper(cifar_model)
 epsilons = np.linspace(0.005, 0.1, 15)
 fgsm = FastGradientMethod(wrap, back='tf', sess=sess)
 ifgsm = BasicIterativeMethod(wrap, back='tf', sess=sess)
+
+classifier = KerasClassifier(model=cifar_model)
+attack = FastGradientMethod(classifier, eps=0.1)
+test_x_adv = attack.generate(test_x)
+preds_test_x_adv = np.argmax(classifier.predict(test_x_adv), axis=1)
+acc = np.sum(preds_test_x_adv != np.argmax(test_y, axis=1)) / test_y.shape[0]
 
 for i in range(len(epsilons)):
 
