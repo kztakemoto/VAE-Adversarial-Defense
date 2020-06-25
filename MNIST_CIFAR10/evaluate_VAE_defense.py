@@ -1,5 +1,6 @@
 import numpy as np
 import keras
+import tensorflow as tf
 from keras import backend
 from models.cifarmodel import cifar_model
 from models.mnistmodel import mnist_model
@@ -10,7 +11,9 @@ from art.attacks import FastGradientMethod
 from art.classifiers import KerasClassifier
 import matplotlib.pyplot as plt
 import argparse
+import logging
 
+parser = argparse.ArgumentParser(description='run adversarial defense using VAE')
 parser.add_argument('--dataset', type=str, default='cifar', help='dataset type: cifar or mnist')
 args = parser.parse_args()
 
@@ -30,6 +33,11 @@ elif args.dataset == 'mnist':
 else:
     raise ValueError('Dataset type has to be `cifar` or `mnist`')
 
+#train_x = train_x[range(10)]
+#train_y = train_y[range(10)]
+#test_x = test_x[range(10)]
+#test_y = test_y[range(10)]
+
 if args.dataset == 'cifar':
     logger.info('CIFAR-10 Dataset')
     # cifar model
@@ -42,19 +50,22 @@ if args.dataset == 'cifar':
     # Load VAE
     VAE_model = vae_model_cifar()
     VAE_model.compile(optimizer='adam')
-    VAE_model.load_weights("vae_cifar.h5")
+    VAE_model.load_weights("vae_cifar_takemoto15.h5")
 else:
     logger.info('MNIST Dataset')
     # Mnist model
+    x = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
+    y = tf.placeholder(tf.float32, shape=(None, 10))
     mnist_model, logits = mnist_model(input_ph=x, logits=True)
     optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     mnist_model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
     mnist_model.load_weights("trained_model/mnist_model.h5")
+    classifier = KerasClassifier(model=mnist_model)
 
     # Load VAE
     VAE_model = vae_model_mnist()
     VAE_model.compile(optimizer='adam')
-    VAE_model.load_weights("vae_mnist.h5")
+    VAE_model.load_weights("vae_mnist_takemoto15.h5")
 
 # Generate adversarial images
 logger.info('Craft adversarial images with FGSM')
@@ -93,13 +104,18 @@ def norm(x):
 if args.dataset == 'cifar':
     # set CIFAR-10 labels
     label = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-else
+else:
     # set MNIST labels
     label = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
+if args.dataset == 'mnist':
+    test_x = test_x.reshape(test_x.shape[:3])
+    X_adv = X_adv.reshape(X_adv.shape[:3])
+    X_adv_vae = X_adv_vae.reshape(X_adv_vae.shape[:3])
+
 logger.info('Plot the orignail image, perturbation, and adversarial image')
 # select test images
-idx_sample_imgs = np.array([1, 12, 123])
+idx_sample_imgs = np.array([0, 2, 4])
 fig, ax = plt.subplots(len(idx_sample_imgs), 3)
 for i, idx_img in enumerate(idx_sample_imgs):
     ax[i][0].imshow(norm(test_x[idx_img]))
@@ -108,11 +124,11 @@ for i, idx_img in enumerate(idx_sample_imgs):
     ax[i][1].imshow(norm(X_adv[idx_img]))
     ax[i][1].axis('off')
     ax[i][1].set_title(label[np.argmax(preds_X_adv[idx_img])])
-    ax[i][2].imshow(norm(X_vae[idx_img]))
+    ax[i][2].imshow(norm(X_adv_vae[idx_img]))
     ax[i][2].axis('off')
-    ax[i][2].set_title(label[np.argmax(preds_X_vae[idx_img])])
+    ax[i][2].set_title(label[np.argmax(preds_X_adv_vae[idx_img])])
 
 if args.dataset == 'cifar':
     plt.savefig('plot_cifar.png')
-else
+else:
     plt.savefig('plot_mnist.png')
