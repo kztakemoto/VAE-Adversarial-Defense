@@ -39,7 +39,7 @@ Use tf.cast instead.
 [INFO] Accuracy on test images encoded and decoded using VAE: 98.77%
 [INFO] Fooling rate of FGSM attacks on test images: 44.98%
 [INFO] Adversarial defense using VAE
-[INFO] Fooling rate on after adversarial defenses using VAE: 1.23%
+[INFO] Fooling rate on after adversarial defenses using VAE: 10.73%
 [INFO] Plot the orignail image, perturbation, and adversarial image
 __________________________________________________________________________________________________
 Layer (type)                    Output Shape         Param #     Connected to                     
