@@ -92,7 +92,7 @@ logger.info('Adversarial defense using VAE')
 X_adv_vae = VAE_model.predict(X_adv, batch_size=500)
 
 preds_X_adv_vae = np.argmax(classifier.predict(X_adv_vae), axis=1)
-fooling_rate = np.sum(preds_X_vae != np.argmax(test_y, axis=1)) / test_y.shape[0]
+fooling_rate = np.sum(preds_X_adv_vae != np.argmax(test_y, axis=1)) / test_y.shape[0]
 logger.info('Fooling rate on after adversarial defenses using VAE: %.2f%%', (fooling_rate  * 100))
 
 # Plot examples
@@ -114,8 +114,16 @@ if args.dataset == 'mnist':
     X_adv_vae = X_adv_vae.reshape(X_adv_vae.shape[:3])
 
 logger.info('Plot the orignail image, perturbation, and adversarial image')
+
 # select test images
-idx_sample_imgs = np.array([0, 2, 4])
+idx = preds_test_x == np.argmax(test_y, axis=1).reshape(1,len(test_x))
+tmp_idx = preds_X_adv != np.argmax(test_y, axis=1)
+idx = np.vstack([idx, tmp_idx])
+tmp_idx = preds_X_adv_vae == np.argmax(test_y, axis=1)
+idx = np.vstack([idx, tmp_idx])
+idx_sample_imgs = np.sum(idx, axis=0) == 3
+
+idx_sample_imgs = np.random.choice(idx_sample_imgs, 3, replace=False).tolist()
 fig, ax = plt.subplots(len(idx_sample_imgs), 3)
 for i, idx_img in enumerate(idx_sample_imgs):
     ax[i][0].imshow(norm(test_x[idx_img]))
