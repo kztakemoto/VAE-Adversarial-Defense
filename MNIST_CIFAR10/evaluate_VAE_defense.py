@@ -122,6 +122,7 @@ idx = np.vstack([idx, tmp_idx])
 tmp_idx = preds_X_adv_vae == np.argmax(test_y, axis=1)
 idx = np.vstack([idx, tmp_idx])
 idx_sample_imgs = np.sum(idx, axis=0) == 3
+idx_sample_imgs = np.array(range(len(test_x)))[idx_sample_imgs].tolist()
 
 idx_sample_imgs = np.random.choice(idx_sample_imgs, 3, replace=False).tolist()
 fig, ax = plt.subplots(len(idx_sample_imgs), 3)
@@ -131,10 +132,10 @@ for i, idx_img in enumerate(idx_sample_imgs):
     ax[i][0].set_title(label[np.argmax(test_y[idx_img])])
     ax[i][1].imshow(norm(X_adv[idx_img]))
     ax[i][1].axis('off')
-    ax[i][1].set_title(label[np.argmax(preds_X_adv[idx_img])])
+    ax[i][1].set_title(label[preds_X_adv[idx_img]])
     ax[i][2].imshow(norm(X_adv_vae[idx_img]))
     ax[i][2].axis('off')
-    ax[i][2].set_title(label[np.argmax(preds_X_adv_vae[idx_img])])
+    ax[i][2].set_title(label[preds_X_adv_vae[idx_img]])
 
 if args.dataset == 'cifar':
     plt.savefig('plot_cifar.png')
