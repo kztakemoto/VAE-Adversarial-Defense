@@ -32,11 +32,6 @@ elif args.dataset == 'mnist':
 else:
     raise ValueError('Dataset type has to be `cifar` or `mnist`')
 
-#train_x = train_x[range(10)]
-#train_y = train_y[range(10)]
-#test_x = test_x[range(10)]
-#test_y = test_y[range(10)]
-
 if args.dataset == 'cifar':
     logger.info('CIFAR-10 Dataset')
     # cifar model
