@@ -50,7 +50,7 @@ if args.dataset == 'cifar':
     # Load VAE
     VAE_model = vae_model_cifar()
     VAE_model.compile(optimizer='adam')
-    VAE_model.load_weights("vae_cifar_takemoto15.h5")
+    VAE_model.load_weights("vae_cifar.h5")
 else:
     logger.info('MNIST Dataset')
     # Mnist model
@@ -65,7 +65,7 @@ else:
     # Load VAE
     VAE_model = vae_model_mnist()
     VAE_model.compile(optimizer='adam')
-    VAE_model.load_weights("vae_mnist_takemoto15.h5")
+    VAE_model.load_weights("vae_mnist.h5")
 
 # Generate adversarial images
 logger.info('Craft adversarial images with FGSM')
