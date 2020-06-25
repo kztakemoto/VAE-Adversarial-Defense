@@ -116,7 +116,7 @@ if args.dataset == 'mnist':
 logger.info('Plot the orignail image, perturbation, and adversarial image')
 
 # select test images
-idx = preds_test_x == np.argmax(test_y, axis=1).reshape(1,len(test_x))
+idx = (preds_test_x == np.argmax(test_y, axis=1)).reshape(1,len(test_x)
 tmp_idx = preds_X_adv != np.argmax(test_y, axis=1)
 idx = np.vstack([idx, tmp_idx])
 tmp_idx = preds_X_adv_vae == np.argmax(test_y, axis=1)
