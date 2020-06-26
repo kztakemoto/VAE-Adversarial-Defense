@@ -76,7 +76,7 @@ X_vae = VAE_model.predict(test_x, batch_size=500)
 
 preds_X_vae = np.argmax(classifier.predict(X_vae), axis=1)
 acc = np.sum(preds_X_vae == np.argmax(test_y, axis=1)) / test_y.shape[0]
-logger.info('Accuracy on test images encoded and decoded using VAE: %.2f%%', (acc * 100))
+logger.info('Accuracy on test images reconstructed using VAE: %.2f%%', (acc * 100))
 
 preds_X_adv = np.argmax(classifier.predict(X_adv), axis=1)
 fooling_rate = np.sum(preds_X_adv != np.argmax(test_y, axis=1)) / test_y.shape[0]
