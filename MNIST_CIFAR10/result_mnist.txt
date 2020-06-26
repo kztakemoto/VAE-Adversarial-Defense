@@ -1,45 +1,77 @@
 Using TensorFlow backend.
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:528: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:529: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:530: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-/opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:535: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  np_resource = np.dtype([("resource", np.ubyte, 1)])
+WARNING: Logging before flag parsing goes to stderr.
+I0626 09:05:11.596405 4793052608 evaluate_VAE_defense.py:49] MNIST Dataset
 [INFO] MNIST Dataset
-WARNING:tensorflow:From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
-Instructions for updating:
-Colocations handled automatically by placer.
-[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
-Instructions for updating:
-Colocations handled automatically by placer.
-WARNING:tensorflow:From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+W0626 09:05:11.596709 4793052608 deprecation_wrapper.py:119] From evaluate_VAE_defense.py:51: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+[WARNING] From evaluate_VAE_defense.py:51: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0626 09:05:11.609040 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+W0626 09:05:11.611122 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0626 09:05:11.620699 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3976: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3976: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+
+W0626 09:05:11.644410 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+
+W0626 09:05:11.649108 4793052608 deprecation.py:506] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
 Instructions for updating:
 Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
 [WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
 Instructions for updating:
 Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
-WARNING:tensorflow:From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+W0626 09:05:11.689626 4793052608 deprecation_wrapper.py:119] From evaluate_VAE_defense.py:54: The name tf.train.GradientDescentOptimizer is deprecated. Please use tf.compat.v1.train.GradientDescentOptimizer instead.
+
+[WARNING] From evaluate_VAE_defense.py:54: The name tf.train.GradientDescentOptimizer is deprecated. Please use tf.compat.v1.train.GradientDescentOptimizer instead.
+
+W0626 09:05:11.689810 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+W0626 09:05:11.695915 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3295: The name tf.log is deprecated. Please use tf.math.log instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3295: The name tf.log is deprecated. Please use tf.math.log instead.
+
+2020-06-26 09:05:11.736056: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+W0626 09:05:11.847546 4793052608 deprecation.py:323] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/ops/math_grad.py:1250: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
-Use tf.cast instead.
-[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/ops/math_grad.py:1250: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
-Use tf.cast instead.
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+I0626 09:05:11.952461 4793052608 keras.py:493] Inferred 11 hidden layers on Keras classifier.
 [INFO] Inferred 11 hidden layers on Keras classifier.
+W0626 09:05:12.030938 4793052608 deprecation_wrapper.py:119] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:2018: The name tf.image.resize_nearest_neighbor is deprecated. Please use tf.compat.v1.image.resize_nearest_neighbor instead.
+
+[WARNING] From /opt/local/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:2018: The name tf.image.resize_nearest_neighbor is deprecated. Please use tf.compat.v1.image.resize_nearest_neighbor instead.
+
+I0626 09:05:12.404206 4793052608 evaluate_VAE_defense.py:65] Craft adversarial images with FGSM
 [INFO] Craft adversarial images with FGSM
+I0626 09:05:12.404721 4793052608 fast_gradient.py:150] Using model predictions as correct labels for FGM.
 [INFO] Using model predictions as correct labels for FGM.
-[INFO] Success rate of FGM attack: 45.74%
+I0626 09:06:45.084101 4793052608 fast_gradient.py:177] Success rate of FGM attack: 45.75%
+[INFO] Success rate of FGM attack: 45.75%
+I0626 09:06:47.393605 4793052608 evaluate_VAE_defense.py:72] Accuracy on original test images: 99.09%
 [INFO] Accuracy on original test images: 99.09%
+I0626 09:06:47.476836 4793052608 evaluate_VAE_defense.py:74] Encodeing and decoding clean test images using VAE
 [INFO] Encodeing and decoding clean test images using VAE
-[INFO] Accuracy on test images encoded and decoded using VAE: 98.77%
-[INFO] Fooling rate of FGSM attacks on test images: 44.98%
+I0626 09:06:51.161747 4793052608 evaluate_VAE_defense.py:79] Accuracy on test images encoded and decoded using VAE: 98.85%
+[INFO] Accuracy on test images encoded and decoded using VAE: 98.85%
+I0626 09:06:53.539218 4793052608 evaluate_VAE_defense.py:83] Fooling rate of FGSM attacks on test images: 44.99%
+[INFO] Fooling rate of FGSM attacks on test images: 44.99%
+I0626 09:06:53.539453 4793052608 evaluate_VAE_defense.py:85] Adversarial defense using VAE
 [INFO] Adversarial defense using VAE
-[INFO] Fooling rate on after adversarial defenses using VAE: 10.73%
+I0626 09:06:57.302894 4793052608 evaluate_VAE_defense.py:90] Fooling rate on after adversarial defenses using VAE: 12.89%
+[INFO] Fooling rate on after adversarial defenses using VAE: 12.89%
+I0626 09:06:57.303341 4793052608 evaluate_VAE_defense.py:110] Plot the orignail image, perturbation, and adversarial image
 [INFO] Plot the orignail image, perturbation, and adversarial image
 __________________________________________________________________________________________________
 Layer (type)                    Output Shape         Param #     Connected to                     
