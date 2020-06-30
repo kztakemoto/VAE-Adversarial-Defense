@@ -6,13 +6,13 @@ This repository is a forked version of [VAE-Adversarial-Defense](https://github.
 
 - Python 3.7
 - Tensorflow and Keras
-- IBM Adversarial Robustness Toolbox 1.1.0
+- IBM Adversarial Robustness Toolbox 1.3.0
 - Sklearn
 - Scipy
 - matplotlib
 
 ## MNIST and CIFAR-10
-### Install IBM Adversarial Robustness Toolbox 1.1.0
+### Install IBM Adversarial Robustness Toolbox 1.3.0
 ```
 pip install git+https://github.com/kztakemoto/adversarial-robustness-toolbox
 ```
@@ -36,6 +36,13 @@ for CIFAR-10
 ```
 python evaluate_VAE_defense.py --dataset cifar
 ```
+
+### Examples
+CIFAR-10
+![CIFAR-10](MNIST_CIFAR10/assets/plot_cifar.png)
+
+MNIST
+![MNIST](MNIST_CIFAR10/assets/plot_mnist.png)
 
 ## NIPS 2017 Defense Against Adversarial Attacks Dataset
 
