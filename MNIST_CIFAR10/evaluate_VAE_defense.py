@@ -6,7 +6,7 @@ from models.cifarmodel import cifar_model
 from models.mnistmodel import mnist_model
 from loaddata import load_cifar, load_mnist
 from models.vae import vae_model_mnist, vae_model_cifar
-from art.attacks import FastGradientMethod
+from art.attacks.evasion import FastGradientMethod
 from art.classifiers import KerasClassifier
 import matplotlib.pyplot as plt
 import argparse
