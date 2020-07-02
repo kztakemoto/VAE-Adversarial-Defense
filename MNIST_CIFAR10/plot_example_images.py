@@ -63,8 +63,11 @@ else:
 
 # Generate adversarial images
 logger.info('Craft adversarial images with FGSM')
-attack = FastGradientMethod(classifier, eps=0.1)
-X_adv = attack.generate(test_x)
+if args.dataset == 'cifar':
+    attack = FastGradientMethod(classifier, eps=0.04)
+else:
+    attack = FastGradientMethod(classifier, eps=0.13)
+X_adv = np.clip(attack.generate(test_x), 0, 1)
 
 # Accuracy and fooling rate
 preds_test_x = np.argmax(classifier.predict(test_x), axis=1)
@@ -132,6 +135,6 @@ for i, idx_img in enumerate(idx_sample_imgs):
     ax[i][2].set_title(label[preds_X_adv_vae[idx_img]])
 
 if args.dataset == 'cifar':
-    plt.savefig('plot_cifar.png')
+    plt.savefig('assets/plot_cifar.png')
 else:
-    plt.savefig('plot_mnist.png')
+    plt.savefig('assets/plot_mnist.png')
